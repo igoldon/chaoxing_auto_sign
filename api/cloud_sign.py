@@ -59,7 +59,11 @@ class AutoSign(object):
 
     async def save_cookies(self, cookies: dict):
         """保存cookies"""
-        await self.mongo.save_cookie(cookies)
+        cookie = {}
+        for key, morsel in cookies.items():
+            cookie[key] = morsel.value
+        await self.mongo.save_cookie(cookie)
+        #print(type(cookies))
 
     async def check_cookies(self) -> bool:
         """
@@ -76,13 +80,16 @@ class AutoSign(object):
         self.session.cookie_jar.update_cookies(cookies)
 
         # 验证cookies
-        async with self.session.get('http://mooc1-1.chaoxing.com', allow_redirects=False) as resp:
-            if resp.status != 200:
-                # print("cookies有效")
-                status = True
-            # print("cookies已失效")
-
-        return status
+        async with self.session.get('http://i.mooc.chaoxing.com/space/') as resp:
+            #print(await resp.text("utf-8","ignore"))
+            soup = BeautifulSoup(await resp.text("utf-8","ignore"), 'html.parser')
+            title = soup.title.string
+            if title == '用户登录':
+                print('cookies已失效')
+                return False
+            else:
+                print('cookies有效')
+                return True
 
     async def login(self) -> dict:
         # 登录-手机邮箱登录
@@ -100,7 +107,6 @@ class AutoSign(object):
                 }
             # resp.cookies
             text = await resp.read()
-            print(text)
             data = json.loads(text)
             if data['result']:
                 # return 1000  # 登录成功
@@ -203,7 +209,7 @@ class AutoSign(object):
 
         res: list = []
         re_rule = r'([\d]+),2'
-        url: str = 'https://mobilelearn.chaoxing.com/widget/pcpick/stu/index?courseId={}&jclassId={}'.format(
+        url: str = 'http://mobilelearn.chaoxing.com/widget/pcpick/stu/index?courseId={}&jclassId={}'.format(
             courseid, classid)
         async with self.session.get(url) as resp:
             h = etree.HTML(await resp.read())
