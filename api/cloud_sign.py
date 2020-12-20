@@ -73,7 +73,6 @@ class AutoSign(object):
         # 从数据库内取出cookie
         status: bool = False
         cookies: dict = await self.mongo.get_cookie()
-        #print(cookies)
 
         if not cookies:
             return status
@@ -91,7 +90,6 @@ class AutoSign(object):
             else:
                 print('cookies有效')
                 return True
-        #return False
 
     async def login(self) -> dict:
         # 登录-手机邮箱登录
@@ -109,7 +107,6 @@ class AutoSign(object):
                 }
             # resp.cookies
             text = await resp.read()
-            # print(text.decode())
             data = json.loads(text)
             if data['result']:
                 # return 1000  # 登录成功
@@ -216,7 +213,6 @@ class AutoSign(object):
             courseid, classid)
         async with self.session.get(url) as resp:
             h = etree.HTML(await resp.read())
-        # print(await resp.text("utf-8","ignore"))
 
         activeid_list = h.xpath('//*[@id="startList"]/div/div/@onclick')
 

@@ -7,6 +7,11 @@ USER_INFO = {
     'schoolid': ''  # 学号登录才需要填写
 }
 
+# 签到间隔时间设置,时分秒, 默认是每间隔5分钟执行一次
+i_hours = 0
+i_minutes = 5
+i_seconds = 0
+
 # server酱
 SERVER_CHAN_SCKEY = 'xxxx'  # 申请地址http://sc.ftqq.com/3.version
 SERVER_CHAN = {
@@ -31,9 +36,6 @@ longitude = "-1"
 
 # ip地址
 clientip = "0.0.0.0"
-
-# DEBUG开关
-DEBUG = True
 
 # 状态码
 STATUS_CODE_DICT = {

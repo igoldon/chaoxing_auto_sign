@@ -1,10 +1,24 @@
+## 问题与想法
+
+- 二维码签到功能失效，超星官方给了`enc`字段一个值，这个字段的参数
+在二维码里
+
+
 ## 功能描述
 
 - 登录方式：
 
-支持手机号码登录，支持学号登录
+支持手机号码登录和学号登录
 
 - 签到功能：
+
+健康打卡：
+
+支持腾讯云函数，设置定时触发自动打卡
+
+详情： https://github.com/mkdir700/chaoxing_auto_sign/tree/latest/heath
+
+课程签到：
 
 支持普通签到，手势签到，二维码签到，位置签到，拍照签到
 
@@ -23,18 +37,28 @@
 ## 项目目录
 
 ```
-├── api
+├── api                         # 课堂签到（API）
 │   ├── cloud_sign.py
 │   ├── config.py
 │   ├── db_handler.py
 │   ├── main.py
+│   ├── readme.md
 │   ├── requirements.txt
-│   └── sign_in_script.py
-├── local
-│   ├── cloud_sign.py
+│   └── sign_script.py
+├── heath                       # 健康日报
+│   ├── main.py
+│   └── readme.md
+├── local                       # 课程签到（本地）
 │   ├── config.py
+│   ├── image
+│   │   └── 深度截图_选择区域_20200522103426.png
+│   ├── local_sign.py
+│   ├── log.py
+│   ├── logs.log
 │   └── requirements.txt
-└── readme.md
+├── __pycache__
+├── readme.md
+└── start.sh
 ```
 
 - 多人使用：
@@ -59,10 +83,12 @@ https://github.com/mkdir700/chaoxing_auto_sign/blob/master/api/readme.md
 
 将需要上传的图片文件，放到`image`文件夹中即可，可以放多张图片
 
-遇到拍照签到时，会默认随机抽取一张进行上传，如果`image`下没有图片，默认上传黑色图片
+遇到拍照签到时，会默认随机抽取一张进行上传，如果`image`下没有图片，默认上传我自己拍摄的一张照片 2333~
 
 
 ## 不想折腾？
+
+现有接口请求之后，要等一段时间才能开始签到，具体等多久只能看当时同时请求的人有多少了，一般都比较慢。如果有条件的话，建议选择本地脚本，或者自己部署个api脚本。
 
 每次需要签到的时候，就在浏览器内访问这个链接
 
@@ -77,6 +103,12 @@ https://github.com/mkdir700/chaoxing_auto_sign/blob/master/api/readme.md
 ```
 http://101.89.182.58:9090/sign
 ```
+
+温馨提示：
+
+接口目前使用人数过多，所以有环境能自己搭建，尽量使用自己搭建的
+
+人数过多，会出现签到不及时的现象
 
 请求代码示例：
 ```python
